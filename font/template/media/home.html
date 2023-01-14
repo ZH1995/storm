@@ -1,0 +1,404 @@
+<!--
+ Created by zh on 2016/4/2.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新媒体</title>
+    <!--适应不同屏幕-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!--引入bootstrap-->
+    <link rel="stylesheet" href="{{ static_url('bootstrap-3.3.5-dist/css/bootstrap.min.css') }}" />
+    <script src="{{ static_url('jquery-2.2.2.min.js') }}"></script>
+    <script src="{{ static_url('bootstrap-3.3.5-dist/js/bootstrap.min.js') }}"></script>
+    <style>
+        a {font-size:18px; color: black;font-family : 微软雅黑,宋体, 'New York';}
+        a:link {color: black; text-decoration:none;font-family : 微软雅黑,宋体, 'New York';}
+        a:active{color: red; font-family : 微软雅黑,宋体, 'New York';}
+        a:visited {color:black;text-decoration:none;font-family : 微软雅黑,宋体, 'New York';}
+        a:hover {color: black; text-decoration:underline;font-family : 微软雅黑,宋体, 'New York';}
+        .row{
+            display: block;
+        }
+        #loginHideBg{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            background-color: #000;
+            width: 100%;
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+            display: none;
+            z-index: 8;
+        }
+        #loginHideBox{
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            top: 200px;
+            left: 30%;
+            background-color: #fff;
+            display: none;
+            cursor: pointer;
+            z-index: 11;
+        }
+
+        #registerHideBg{
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            background-color: #000;
+            width: 100%;
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+            display: none;
+            z-index: 9;
+        }
+        #registerHideBox{
+            position: absolute;
+            width: 400px;
+            height: 300px;
+            top: 200px;
+            left: 30%;
+            background-color: #fff;
+            display: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+    </style>
+    <script>
+       $(function(){
+        $("#slidershow").carousel({
+        interval:2000
+        });
+        $("#slidershow a.left").click(function(){
+        $(".carousel").carousel("prev");
+        });
+        $("#slidershow a.right").click(function(){
+        $(".carousel").carousel("next");
+        });
+        });
+        function goContent(message_id , headline, tags, pic, user_id, nick_name){
+
+            if(user_id == 'None'){
+                loginShow();
+            }
+            else{
+                var f = document.createElement("form");
+                document.body.appendChild(f);
+                f.method = 'get';
+                f.action = '/content';
+
+                var newElement = document.createElement("input");
+                newElement.name = 'message_id';
+                newElement.value = message_id;
+                f.appendChild(newElement);
+
+                var newElement02 = document.createElement("input");
+                newElement02.name = 'headline';
+                newElement02.value = headline;
+                f.appendChild(newElement02);
+
+                var newElement03 = document.createElement("input");
+                newElement03.name = 'tags';
+                newElement03.value = tags;
+                f.appendChild(newElement03);
+
+                var newElement04 = document.createElement("input");
+                newElement04.name = 'pic';
+                newElement04.value = pic;
+                f.appendChild(newElement04);
+
+                f.submit();
+            }
+        }
+        function goHome(){
+            window.location.href=('/');
+        }
+
+       function registerShow(){
+            var registerHideBg = document.getElementById('registerHideBg');
+            registerHideBg.style.display = "block";
+            registerHideBg.style.height = document.body.clientHeight + "px";
+            document.getElementById('registerHideBox').style.display="block";
+        }
+        function registerHide(){
+            document.getElementById('registerHideBg').style.display="none";
+            document.getElementById('registerHideBox').style.display="none";
+        }
+
+        function loginShow(){
+
+            var loginHideBg = document.getElementById('loginHideBg');
+            loginHideBg.style.display = "block";
+            loginHideBg.style.height = document.body.clientHeight + "px";
+            document.getElementById('loginHideBox').style.display="block";
+        }
+        function loginHide(){
+            document.getElementById('loginHideBg').style.display="none";
+            document.getElementById('loginHideBox').style.display="none";
+        }
+        function check_str(str){
+            for(var i = 0 ; i < str.length ; i ++){
+                if((str[i] >= '0' && str[i] <= '9') || str[i] == '_' || (str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
+                        continue;
+                else{
+                    return false;
+                }
+            }
+            return true;
+        }
+        function goLogin(){
+            var user_name = document.getElementById('user_name').value;
+            var user_pass = document.getElementById('user_pass').value;
+
+            if(user_name == null || user_pass == null){
+                alert('用户名或密码不能为空');
+            }
+            else if(user_name.length < 6 || user_name.length > 12 || user_pass.length < 6 || user_pass.length > 12){
+                alert("用户名或密码长度应在6~12之间");
+            }
+            else if(!check_str(user_name) || !check_str(user_pass)){
+                alert("用户名或密码只允许包含字母、数字、下划线");
+            }
+            else {
+                var f = document.getElementById('loginForm');
+                f.method = 'get';
+                f.action = '/login';
+                f.submit();
+            }
+        }
+
+       function  same(str1 , str2){
+           if(str1.length != str2.length) return false;
+           for(var i = 0 ; i < str1.length ; i ++){
+               if(str1[i] != str2[i]) return false;
+           }
+           return true;
+       }
+
+        function goRegister(){
+            var user_name = document.getElementById('register_user_name').value;
+            var user_pass = document.getElementById('register_user_pass').value;
+            var confirm_pass = document.getElementById('register_confirm_pass').value;
+            var nick_name = document.getElementById('nick_name').value;
+            console.log(user_name.length + ' ' + user_pass.length + ' ' + nick_name.length );
+            if(user_name == null || user_pass == null || nick_name == null || confirm_pass == null){
+                alert('用户名或密码不能为空');
+            }/*
+            else if(user_name.length < 6 || user_name.length > 12 || user_pass.length < 6 || user_pass.length > 12 || nick_name > 12){
+                alert("用户名或密码长度应在6~12之间");
+            }*/
+            else if(!check_str(user_name) || !check_str(user_pass)){
+                alert("用户名或密码只允许包含字母、数字、下划线");
+            }else if(!same(user_pass, confirm_pass)){
+                alert("两次输入密码不一致");
+            }
+            else {
+                var f = document.getElementById('registerForm');
+                f.method = 'get';
+                f.action = '/register';
+                f.submit();
+            }
+        }
+
+    </script>
+</head>
+    <!--登陆框-->
+    <div id="loginHideBg"></div>
+    <div id="loginHideBox">
+        <form class="form-horizontal" role="form" style="margin-top: 10px;" id="loginForm">
+           <div class="form-group">
+              <label for="user_name" class="col-sm-2 control-label">账号</label>
+              <div class="col-sm-10">
+                 <input type="text" class="form-control" id="user_name" name="user_name"
+                    placeholder="请输入账号">
+              </div>
+           </div>
+           <div class="form-group">
+              <label for="user_pass" class="col-sm-2 control-label">密码</label>
+              <div class="col-sm-10">
+                 <input type="text" class="form-control" id="user_pass" name="user_pass"
+                    placeholder="请输入密码">
+              </div>
+           </div>
+           <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-4">
+                 <button class="btn btn-default" onclick="goLogin();">登录</button>
+              </div>
+              <div class="col-sm-offset-2 col-sm-4">
+                <button  class="btn btn-default" onclick="loginHide();">取消</button>
+              </div>
+           </div>
+        </form>
+    </div>
+
+
+    <!--注册框-->
+    <div id="registerHideBg"></div>
+    <div id="registerHideBox">
+        <form class="form-horizontal" role="form" style="margin-top: 10px;" id="registerForm">
+            <div class="form-group">
+              <label for="nick_name" class="col-sm-4 control-label">昵称</label>
+              <div class="col-sm-8">
+                 <input type="text" class="form-control" id="nick_name" name="nick_name"
+                    placeholder="请输入昵称">
+              </div>
+           </div>
+            <div class="form-group">
+              <label for="register_user_name" class="col-sm-4 control-label">账号</label>
+              <div class="col-sm-8">
+                 <input type="text" class="form-control" id="register_user_name" name="user_name"
+                    placeholder="请输入账号">
+              </div>
+           </div>
+           <div class="form-group">
+              <label for="register_user_pass" class="col-sm-4 control-label">密码</label>
+              <div class="col-sm-8">
+                 <input type="text" class="form-control" id="register_user_pass" name="user_pass"
+                    placeholder="请输入密码">
+              </div>
+           </div>
+            <div class="form-group">
+              <label for="register_confirm_pass" class="col-sm-4 control-label">确认密码</label>
+              <div class="col-sm-8">
+                 <input type="text" class="form-control" id="register_confirm_pass" name="confirm_pass"
+                    placeholder="请再次输入密码">
+              </div>
+           </div>
+           <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-4">
+                 <button class="btn btn-default" onclick="goRegister();">注册</button>
+              </div>
+              <div class="col-sm-offset-2 col-sm-4">
+                <button  class="btn btn-default" onclick="registerHide();">取消</button>
+              </div>
+           </div>
+        </form>
+    </div>
+
+
+    <nav class="navbar navbar-default" role="navigation">
+       <div class="navbar-header">
+          <a class="navbar-brand" href="javascript:goHome();">新媒体</a>
+       </div>
+       <div>
+          <ul class="nav navbar-nav">
+             <li class="active"><a href="#">最新电影</a></li>
+             <li><a href="#">国内电影</a></li>
+             <li><a href="#">国外电影</a></li>
+          </ul>
+
+           <ul class="nav navbar-nav navbar-right">
+               {% if user_id is None %}
+                    <li><a id="login" onclick="loginShow();">登录</a></li>
+                    <li><a id="register" onclick="registerShow();">注册</a></li>
+               {% else %}
+                    <li><a>{{nick_name}}</a></li>
+               {% end %}
+           </ul>
+
+           <form class="navbar-form navbar-right" role="search">
+             <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
+             </div>
+             <button type="submit" class="btn btn-default">搜索</button>
+          </form>
+       </div>
+    </nav>
+
+
+    <!--热点媒体-->
+    {% if len(hot_media) == 0 %}
+        <li>暂时没有热点媒体</li>
+    {% else %}
+      <div id="slidershow" class="carousel slide" style="margin-left: 10%;margin-right: 10%">
+         <!-- 设置图片轮播的顺序 -->
+         <ol class="carousel-indicators">
+            <li class="active" data-target="#slidershow" data-slide-to="0"></li>
+            <li data-target="#slidershow" data-slide-to="1"></li>
+            <li data-target="#slidershow" data-slide-to="2"></li>
+             <li data-target="#slidershow" data-slide-to="3"></li>
+         </ol>
+         <!-- 设置轮播图片 -->
+         <div class="carousel-inner">
+             <div class="item active">
+                 <a href="javascript:goContent('{{ hot_media[0]['message_id'] }}', '{{ hot_media[0]['headline'] }}', '{{ hot_media[0]['tags'] }}',
+                                '{{ hot_media[0]['pic'] }}', '{{user_id}}', '{{nick_name}}');"><img src="{{ hot_media[0]['pic'] }}" alt="" style="height: 380px; width: 60%; margin: 10px auto;"></a>
+                 <div class="carousel-caption">
+                 <h3>{{ hot_media[0]['headline'] }}</h3>
+                 </div>
+             </div>
+             <div class="item">
+                 <a href="javascript:goContent('{{ hot_media[1]['message_id'] }}', '{{ hot_media[1]['headline'] }}', '{{ hot_media[1]['tags'] }}',
+                                '{{ hot_media[1]['pic'] }}', '{{user_id}}', '{{nick_name}}');"><img src="{{ hot_media[1]['pic'] }}" alt="" style="height: 380px; width: 60%; margin: 10px auto;"></a>
+                 <div class="carousel-caption">
+                 <h3>{{ hot_media[1]['headline'] }}</h3>
+                 </div>
+             </div>
+             <div class="item">
+                 <a href="javascript:goContent('{{ hot_media[2]['message_id'] }}', '{{ hot_media[2]['headline'] }}', '{{ hot_media[2]['tags'] }}',
+                                '{{ hot_media[2]['pic'] }}', '{{user_id}}', '{{nick_name}}');"><img src="{{ hot_media[2]['pic'] }}" alt="" style="height: 380px; width: 60%; margin: 10px auto;"></a>
+                 <div class="carousel-caption">
+                 <h3>{{ hot_media[2]['headline'] }}</h3>
+                 </div>
+             </div>
+             <div class="item">
+                 <a href="javascript:goContent('{{ hot_media[3]['message_id'] }}', '{{ hot_media[3]['headline'] }}', '{{ hot_media[3]['tags'] }}',
+                                '{{ hot_media[3]['pic'] }}', '{{user_id}}', '{{nick_name}}');"><img src="{{ hot_media[3]['pic'] }}" alt="" style="height: 380px; width: 60%; margin: 10px auto;"></a>
+                 <div class="carousel-caption">
+                 <h3>{{ hot_media[3]['headline'] }}</h3>
+                 </div>
+             </div>
+         </div>
+         <a class="left carousel-control" href="#slidershow" role="button">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+         </a>
+         <a class="right carousel-control" href="#slidershow" role="button">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+         </a>
+      </div>
+
+    {% end %}
+
+    <!--媒体列表-->
+    {% if len(media_list) == 0 %}
+        <li>暂时没有媒体资源</li>
+    {% else %}
+        {% for dic in media_list %}
+
+            <div class="container" style="margin: 5px auto; display: block">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-8">
+                                <a href="javascript:goContent('{{ dic['message_id'] }}', '{{ dic['headline'] }}', '{{ dic['tags'] }}',
+                                '{{ dic['pic'] }}', '{{user_id}}', '{{nick_name}}');">{{ dic['headline'] }}</a>
+                            </div>`
+                            <div class="col-md-1"></div>
+                         </div>
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-8">
+                                <h4>{{ dic['tags'] }}</h4>
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="{{ dic['pic'] }}" style="height: 140px;width: 160px;text-align: right" />
+                    </div>
+                </div>
+
+            </div>
+
+        {% end %}
+    {% end %}
+</body>
+</html>

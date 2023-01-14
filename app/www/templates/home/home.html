@@ -1,0 +1,44 @@
+<ion-view view-title="首页">
+  <ion-content>
+    <div class="home-slide">
+      <ion-slide-box does-continue="true" auto-play="true" slide-interval="1000">
+        <ion-slide>
+          <img src="img/01.jpg">
+        </ion-slide>
+        <ion-slide>
+          <img src="img/02.jpg">
+        </ion-slide>
+        <ion-slide>
+          <img src="img/03.jpg">
+        </ion-slide>
+      </ion-slide-box>
+    </div>
+
+
+    <div class="articleList">
+      <ion-refresher
+        pulling-text="下拉刷新..."
+        on-refresh="doRefresh()">
+      </ion-refresher>
+
+      <div ng-if="showloading" style="margin-top: 60px; text-align: center">
+        <ion-spinner icon="ios" style="height: 60px; width: 60px;"></ion-spinner>
+      </div>
+
+      <ion-list class="topics_list" ng-if="showloading == false">
+        <ion-item class="item-thumbnail-left" collection-repeat="article in articlesListData" href="#/news_content/{{article.article_id}}"
+                  collection-item-width="100%" collection-item-height="88px">
+          <!--
+          <img ng-if="topic.pic" ng-src="{{ENV.imgUrl}}/{{topic.pic}}">
+          <img ng-if="!topic.pic" ng-src="img/ionic.png">
+          -->
+          <img ng-src="{{article.pic}}">
+          <h2>{{article.headline}}</h2>
+          <p class="summary">
+          </p>
+        </ion-item>
+      </ion-list>
+      <ion-infinite-scroll   on-infinite="loadMore()"  distance="1%" ng-if="hasNextPage()"></ion-infinite-scroll>
+    </div>
+  </ion-content>
+</ion-view>

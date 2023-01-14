@@ -1,0 +1,48 @@
+
+<ion-view hide-tabs title="文章详情">
+
+  <ion-nav-buttons side="left">
+    <button class="button back-button buttons button-icon ion-arrow-left-c header-item" ng-click="$ionicGoBack()">
+            <span class="back-text" style="-webkit-transform: translate3d(0px, 0px, 0px);">
+                <span class="default-title hide">Back</span>
+            </span>
+    </button>
+  </ion-nav-buttons>
+
+  <ion-nav-buttons side="right">
+    <button class="button button-icon ion-compose" href="#/news_content/comment/:{{article_id}}">
+    </button>
+  </ion-nav-buttons>
+
+  <ion-content padding="true">
+    <div ng-if="showloading" style="margin-top: 60px; text-align: center">
+      <ion-spinner icon="ios" style="height: 60px; width: 60px;"></ion-spinner>
+    </div>
+    <!--
+    <div class="article_content"  ng-if="showloading == false" ng-bind-html="NewsContentData[0]['content']"></div>
+    -->
+    <div class="article_content" ng-if="showloading == false">
+      <div style="height: 150px; width: 100%; background-color: #4cd964; text-align: center">
+        <img src="{{NewsContentData['pic']}}" style="height: 100%; width: 100%">
+      </div>
+      <div class="row">
+        <div class="col">
+          <h3 style="text-align: center">{{NewsContentData['headline']}}</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h4 style="text-align: left;">{{NewsContentData['source']}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <h4 style="font-family: 'Times New Roman', '微软雅黑','黑体','宋体';">&nbsp;&nbsp;&nbsp;&nbsp;{{NewsContentData['content']}}</h4>
+      </div>
+      <div class="row">
+        <div class="col">
+          <h4 style="text-align: right;">{{NewsContentData['create_time']}}</h4>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

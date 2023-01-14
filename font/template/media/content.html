@@ -1,0 +1,94 @@
+<!--
+ Created by zh on 2016/4/2.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新媒体</title>
+    <!--适应不同屏幕-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!--引入bootstrap-->
+    <link rel="stylesheet" href="{{ static_url('bootstrap-3.3.5-dist/css/bootstrap.min.css') }}" />
+    <script src="{{ static_url('jquery-2.2.2.min.js') }}"></script>
+    <script src="{{ static_url('bootstrap-3.3.5-dist/js/bootstrap.min.js') }}"></script>
+    <script>
+        function goHome(){
+            window.location.href=('/');
+        }
+    </script>
+</head>
+<body>
+
+    <nav class="navbar navbar-default" role="navigation">
+       <div class="navbar-header">
+          <a class="navbar-brand" href="javascript:goHome();">新媒体</a>
+       </div>
+       <div>
+          <ul class="nav navbar-nav">
+             <li class="active"><a href="#">最新电影</a></li>
+             <li><a href="#">国内电影</a></li>
+             <li><a href="#">国外电影</a></li>
+          </ul>
+
+           <ul class="nav navbar-nav navbar-right">
+               {% if user_id is None %}
+                    <li><a href="#">登录</a></li>
+                   <li><a href="#">注册</a></li>
+               {% else %}
+                    <li><a>{{nick_name}}</a></li>
+               {% end %}
+           </ul>
+
+           <form class="navbar-form navbar-right" role="search">
+             <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
+             </div>
+             <button type="submit" class="btn btn-default">搜索</button>
+          </form>
+       </div>
+    </nav>
+
+    <div style="margin-left: 20%; margin-right: 20%; border: 3px solid #DDDDDD;">
+        <div class="row" style="text-align: center">
+            <h1>{{ headline }}</h1>
+        </div>
+        <div class="row" style="margin-bottom: 5px;padding-left: 9.5px;padding-right: 9.5px;margin-right: 0px;margin-left: 0px;">
+            <div class="col-md-6" style="text-align: left;padding-left: 0px;padding-right: 0px;">
+                发布时间：{{ media_content['gmt_created'] }}
+            </div>
+            <div class="col-md-6" style="text-align: right;padding-left: 0px;padding-right:0px;">
+                浏览量：{{ media_content['click_num'] }}
+            </div>
+        </div>
+
+        <div style="text-align: center">
+            <img src="{{ pic }}" style="width: 100%;"/>
+        </div>
+
+        <pre style="word-wrap: break-word; white-space: pre-wrap; white-space: -moz-pre-wrap; border: 0px solid #fff;background-color: #fff;margin-bottom: 5px;">{{ media_content['content'] }}</pre>
+
+        <div class="row" style="padding-left: 9.5px;padding-right: 9.5px;margin-right: 0px;margin-left: 0px;">
+            <span style="color:red;">[观看地址]</span>
+        </div>
+        <div class="row" style="padding-left: 9.5px;padding-right: 9.5px;margin-right: 0px;margin-left: 0px;margin-bottom: 5px;">
+            <a href="{{ media_content['download_addr'] }}">{{media_content['download_addr']}}</a>
+        </div>
+        <div class="row" style="padding-left: 9.5px;padding-right: 9.5px;margin-right: 0px;margin-left: 0px;">
+            来源：{{ media_content['source'] }}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
